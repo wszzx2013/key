@@ -1,0 +1,135 @@
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local KeyBox = Instance.new("TextBox")
+local SubmitButton = Instance.new("TextButton")
+local StatusLabel = Instance.new("TextLabel")
+local CloseButton = Instance.new("TextButton")
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.Name = "InjectorKeySystem"
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+MainFrame.BorderSizePixel = 0
+MainFrame.Position = UDim2.new(0.35, 0, 0.3, 0)
+MainFrame.Size = UDim2.new(0.3, 0, 0.35, 0)
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+Title.Name = "Title"
+Title.Parent = MainFrame
+Title.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+Title.BorderSizePixel = 0
+Title.Size = UDim2.new(1, 0, 0.15, 0)
+Title.Font = Enum.Font.SourceSansBold
+Title.Text = "土脚本密钥系统"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 24.0
+
+KeyBox.Name = "KeyBox"
+KeyBox.Parent = MainFrame
+KeyBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+KeyBox.BorderSizePixel = 0
+KeyBox.Position = UDim2.new(0.1, 0, 0.3, 0)
+KeyBox.Size = UDim2.new(0.8, 0, 0.15, 0)
+KeyBox.Font = Enum.Font.SourceSans
+KeyBox.PlaceholderText = "请输入卡密..."
+KeyBox.Text = ""
+KeyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyBox.TextSize = 18.0
+KeyBox.TextWrapped = true
+
+SubmitButton.Name = "SubmitButton"
+SubmitButton.Parent = MainFrame
+SubmitButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+SubmitButton.BorderSizePixel = 0
+SubmitButton.Position = UDim2.new(0.25, 0, 0.55, 0)
+SubmitButton.Size = UDim2.new(0.5, 0, 0.15, 0)
+SubmitButton.Font = Enum.Font.SourceSansBold
+SubmitButton.Text = "验证卡密"
+SubmitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitButton.TextSize = 20.0
+
+StatusLabel.Name = "StatusLabel"
+StatusLabel.Parent = MainFrame
+StatusLabel.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+StatusLabel.BorderSizePixel = 0
+StatusLabel.Position = UDim2.new(0.1, 0, 0.75, 0)
+StatusLabel.Size = UDim2.new(0.8, 0, 0.15, 0)
+StatusLabel.Font = Enum.Font.SourceSans
+StatusLabel.Text = "状态: 等待输入..."
+StatusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+StatusLabel.TextSize = 18.0
+StatusLabel.TextWrapped = true
+
+CloseButton.Name = "CloseButton"
+CloseButton.Parent = MainFrame
+CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+CloseButton.BorderSizePixel = 0
+CloseButton.Position = UDim2.new(0.9, -25, 0, 5)
+CloseButton.Size = UDim2.new(0, 20, 0, 20)
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.TextSize = 16.0
+
+
+local function validateKey(key)
+    -- 这里应该是你的卡密验证逻辑
+    -- 示例: 假设有效的卡密格式为 "INJ-XXXX-XXXX-XXXX"
+    
+    -- 模拟验证过程
+    wait(1) -- 模拟网络延迟
+    
+    -- 示例验证逻辑
+    if string.match(key, "^INJ%-%d%d%d%d%-%d%d%d%d%-%d%d%d%d$") then
+        return true
+    elseif key == "zzxnbnb123" then -- 测试用卡密
+        return true
+    else
+        return false
+    end
+end
+
+-- 提交按钮点击事件
+SubmitButton.MouseButton1Click:Connect(function()
+    local key = KeyBox.Text
+    if key == "" then
+        StatusLabel.Text = "状态: 请输入卡密!"
+        StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+        return
+    end
+    
+    StatusLabel.Text = "状态: 验证中..."
+    StatusLabel.TextColor3 = Color3.fromRGB(255, 255, 150)
+    
+    local isValid = validateKey(key)
+    
+    if isValid then
+        StatusLabel.Text = "状态: 验证成功! 加载功能..."
+        StatusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+        
+loadstring(game:HttpGet("https://raw.githubusercontent.com/wszzx2013/tujiaoben/refs/heads/main/Mian"))()
+        wait(2)
+        MainFrame.Visible = false
+        -- 注入功能代码...
+    else
+        StatusLabel.Text = "状态: 卡密无效!"
+        StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+    end
+end)
+
+-- 关闭按钮点击事件
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+-- 回车键提交
+KeyBox.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        SubmitButton.MouseButton1Click:Wait()
+    end
+end)
