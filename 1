@@ -117,6 +117,7 @@ SubmitButton.MouseButton1Click:Connect(function()
         -- 卡密验证通过后执行注入器功能
         -- 这里应该是你的注入器主功能代码
         wait(2)
+        ScreenGui:Destroy()
         MainFrame.Visible = false
         -- 注入功能代码...
     else
