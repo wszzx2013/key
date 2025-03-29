@@ -1,3 +1,4 @@
+print("土脚本已加载")
 
 local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
@@ -114,6 +115,8 @@ SubmitButton.MouseButton1Click:Connect(function()
         StatusLabel.Text = "状态: 验证成功! 加载功能..."
         StatusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/wszzx2013/tujiaoben/refs/heads/main/Mian"))()
+
+pirnt("卡密正确 正在加载脚本")
         -- 卡密验证通过后执行注入器功能
         -- 这里应该是你的注入器主功能代码
         wait(2)
@@ -136,3 +139,5 @@ KeyBox.FocusLost:Connect(function(enterPressed)
         SubmitButton.MouseButton1Click:Wait()
     end
 end)
+
+pirnt("加载完成")
